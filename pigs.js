@@ -49,20 +49,27 @@ function handleClick(id) {
             return;
         }
         scoringSystem()
+        document.getElementById("")
         hand = document.getElementById("player1HandScore").innerHTML
-        hand.innerHTML = roundScore
+        hand.add = roundScore
         bank = roundScore + playerScore;
-        console.log(pigScore1)
     }
 }
 function scoringSystem() {
     if (pigScore1 === pigScore2 && pigScore1 !== "Dot" && pigScore1 !== "No Dot") {
         roundScore += (scores[pigScore1] * 2);
     } else {
-        roundScore += scores[pigScore1];
-        roundScore += scores[pigScore2];
+        roundScore += scores[pigScore1] || 0;
+        roundScore += scores[pigScore2] || 0;
     }
     console.log(roundScore)
+}
+
+function changeScores(){
+     hand = document.getElementById("player1HandScore");
+    if (hand) {
+        hand.innerHTML = roundScore;
+    }
 }
 function pass() {
     playerTrack = (playerTrack + 1) % 4
@@ -78,5 +85,16 @@ function pass() {
         currentPlayer.classList.remove("w3-light-gray");
         currentPlayer.classList.add("w3-dark-gray");
     }
-}
-
+    if (bank === 100){
+unhide = document.getElementById("replay")
+unhide.classList.remove("w3-hide")
+    }
+ bank = 0
+ roundScore = 0
+ pigScore1 = 0
+ pigScore2 = 0
+ pig1 = 0
+ pig2 = 0
+playerTrack = 0
+playerScore = 0
+r = 0 }
