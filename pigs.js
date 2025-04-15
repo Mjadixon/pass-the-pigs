@@ -1,4 +1,4 @@
-let bank = 0
+
 let roundScore = 0
 let pigScore1 = 0
 let pigScore2 = 0
@@ -6,8 +6,8 @@ let pig1 = 0
 let pig2 = 0
 let playerTrack = 0
 ranks = ["Razorback", "Trotter", "Snouter", "Leaning Jowler", "Dot", "No Dot"]
-scores = { Razorback: 5, Dot: 1, noDot: 1, Trotter: 5, Snouter: 10, leaningJowler: 15 }
-playerScore = 0
+scores = { Razorback: 5, Trotter: 5, Snouter: 10, "Leaning Jowler": 15, Dot: 1, noDot: 1, }
+playerScore = [0, 0, 0, 0]
 r = 0
 
 function rolls() {
@@ -30,10 +30,11 @@ function handleClick(id) {
     console.log(id)
     if (id.includes("Pass")) {
         console.log("pass Clicked")
+        playerScore[playerTrack] += roundScore
         pass()
         roundScore = 0
-        pigScore1 = 0
-        pigScore2 = 0
+        pigScore1 = ""
+        pigScore2 = ""
 
     }
     if (id.includes("Roll")) {
@@ -42,17 +43,19 @@ function handleClick(id) {
         pigScore2 = rolls()
         console.log(pigScore1)
         console.log(pigScore2)
-        if ((pigScore1 == ranks[4] && pigScore2 == ranks[5]) || pigScore1 == ranks[5] && pigScore2 == ranks[4]) {
-            console.log("pig out")
-            roundScore = 0
+        if ((pigScore1 === "Dot" && pigScore2 === "No Dot") || (pigScore1 === "No Dot" && pigScore2 === "Dot")
+        ) {
+            console.log("pig out");
+            roundScore = 0;
+            changeScores();
+            pigBars()
             pass()
             return;
         }
-        scoringSystem()
-        document.getElementById("")
-        hand = document.getElementById("player1HandScore").innerHTML
-        hand.add = roundScore
-        bank = roundScore + playerScore;
+        gameEnd();
+        scoringSystem();
+        changeScores();
+        pigBars();
     }
 }
 function scoringSystem() {
@@ -64,11 +67,27 @@ function scoringSystem() {
     }
     console.log(roundScore)
 }
+function changeScores() {
+    for (let i = -1; i < 4; i++) {
+        hand = document.getElementById("player" + [i] + "HandScore")
+        score = document.getElementById("player" + [i] + "TotalScore")
+        if (hand) {
+            if (i === playerTrack) {
+                hand.innerHTML = "Round: " + roundScore
+            } else {
+                hand.innerHTML = "Score: " + playerScore[i]
+                score.innerHTML = "Total Score: " + playerScore[i]
+            }
+        }
+    }
 
-function changeScores(){
-     hand = document.getElementById("player1HandScore");
-    if (hand) {
-        hand.innerHTML = roundScore;
+}
+function pigBars() {
+    document.getElementById("player" + playerTrack + "Pig1").innerHTML = pigScore1
+    document.getElementById("player" + playerTrack + "Pig2").innerHTML = pigScore2
+    if (playerTrack) {
+        pigScore1.innerHTML = ""
+        pigScore2.innerHTML = ""
     }
 }
 function pass() {
@@ -85,16 +104,23 @@ function pass() {
         currentPlayer.classList.remove("w3-light-gray");
         currentPlayer.classList.add("w3-dark-gray");
     }
-    if (bank === 100){
-unhide = document.getElementById("replay")
-unhide.classList.remove("w3-hide")
+}
+function gameEnd() {
+    if (playerScore[playerTrack] >= 10) {
+       const unhide = document.getElementById("replayButton")
+        if (unhide) {
+            unhide.classList.remove("w3-hide")
+            replayButton.onClick = function () {
+                pigScore1 = 0
+                pigScore2 = 0
+                playerTrack = 0
+                currentPlayer0
+                otherPlayer = 0
+                roundScore = 0
+                pig1 = 0
+                pig2 = 0
+                playerScore = [0, 0, 0, 0]
+            }
+        }
     }
- bank = 0
- roundScore = 0
- pigScore1 = 0
- pigScore2 = 0
- pig1 = 0
- pig2 = 0
-playerTrack = 0
-playerScore = 0
-r = 0 }
+}
